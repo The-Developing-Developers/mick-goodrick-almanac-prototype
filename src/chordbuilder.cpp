@@ -1,4 +1,3 @@
-#include <iostream> // TODO: debug
 #include "chordbuilder.hpp"
 #include "constants.hpp"
 #include "interval.hpp"
@@ -157,12 +156,8 @@ std::vector<Chord> ChordBuilder::harmoniseScaleUsingMsrp(const Scale& scale, con
       break;
 
     default:
-      throw std::runtime_error("ChordBuilder::harmoniseScaleUsingMsrp: sequence not recognised");
       break;
   }
-
-  // TODO: debug
-  std::cout << "Sequence Type size: " << sequence_type.size() << '\n';
 
   // Build the MSRP by applying the `sequence_type` to the specified `scale`. The MSRP is composed
   // of `numOfNotesInHeptatonicScale` times the number of notes in the chord (triad, quadriad etc.) `Note`s.
@@ -176,27 +171,6 @@ std::vector<Chord> ChordBuilder::harmoniseScaleUsingMsrp(const Scale& scale, con
       msrp.push_back(scale.getNoteInScale((index += sequence_type[j]) % Constants::numOfNotesInHeptatonicScale));
   }
 
-  // TODO: debug
-  std::cout << "MSRP size: " << msrp.size() << '\n';
-  std::cout << "MSRP composition:\n  ";
-  for (const auto &note : msrp)
-  {
-    const char* spacing = note.getFinalPitch() > 9 ? "  " : "   ";
-    std::cout << note.getFinalPitch() << spacing;
-  }
-  std::cout << "\n  ";
-  for (const auto &note : msrp)
-    std::cout << note.getName() << "   ";
-  std::cout << "\n  ";
-  for (size_t i = 0; i != msrp.size(); ++i)
-  {
-    if (i % Constants::numOfNotesInHeptatonicScale == 0)
-      std::cout << "^   ";
-    else
-      std::cout << "    ";
-  }
-  std::cout << '\n';
-
   // Now that the MSRP is ready, the patterns can be built from the MSRP. Pattern A is built with
   // notes [0, 7) of the MSRP; pattern B is built with notes [7, 14) of the MSRP, and so on. This
   // loop automatically manages patterns arising from triads (three patterns) as well as patterns
@@ -208,22 +182,6 @@ std::vector<Chord> ChordBuilder::harmoniseScaleUsingMsrp(const Scale& scale, con
     index += Constants::numOfNotesInHeptatonicScale;
     const auto end   = msrp.cbegin() + index;
     patterns.emplace_back(std::vector<Note>(begin, end));
-  }
-
-  // TODO: debug
-  std::cout << '\n';
-  for (size_t i = 0; i != sequence_type.size(); ++i)
-  {
-    std::cout << "Intervallic Sequence " << static_cast<char>('A' + i) <<":\n  ";
-    for (const auto &note : patterns[i])
-    {
-      const char* spacing = note.getFinalPitch() > 9 ? "  " : "   ";
-      std::cout << note.getFinalPitch() << spacing;
-    }
-    std::cout << "\n  ";
-    for (const auto &note : patterns[i])
-      std::cout << note.getName() << "   ";
-    std::cout << '\n';
   }
 
   // By analysing the starting `Note` of Pattern B, it is possible to determine whether the sequence
@@ -261,12 +219,9 @@ std::vector<Chord> ChordBuilder::harmoniseScaleUsingMsrp(const Scale& scale, con
                 &&  patterns[pattern_C_idx][pattern_firstNote_idx] == scale.getNoteInScale(Degree(Degree::enum_t::fifth))
                 &&  patterns[pattern_D_idx][pattern_firstNote_idx] == scale.getNoteInScale(Degree(Degree::enum_t::third)))
         msrpType = msrpType_enum::type_1753_ADCB;
-      else
-        throw std::runtime_error("ChordBuilder: pattern order recognition failed");
       break;
 
     default:
-      throw std::runtime_error("ChordBuilder: pattern size not recognised");
       break;
   }
 
@@ -300,17 +255,7 @@ std::vector<Chord> ChordBuilder::harmoniseScaleUsingMsrp(const Scale& scale, con
       break;
 
     default:
-      throw std::runtime_error("ChordBuilder: pattern type not recognised"); // Code should never get here: if the pattern type is not recognised, the previous `switch` statement should throw
       break;
-  }
-
-  // TODO: debug
-  std::cout << '\n';
-  std::cout << "Chords built from MSRP:\n";
-  for (const auto &chord : resultVec)
-  {
-    chord.printChord();
-    std::cout << '\n';
   }
 
   return resultVec;
@@ -349,8 +294,6 @@ void ChordBuilder::completeFinalHarmonisation(const std::vector<Chord> &baseHarm
         nextChord.push_back(Note(baseHarmonisation[nextChordInBaseHarmonisation_idx].getNote(functionalSequence[5])));
       else if (currentChord.getNote(j).getFunction() == Note::Function::seventh)
         nextChord.push_back(Note(baseHarmonisation[nextChordInBaseHarmonisation_idx].getNote(functionalSequence[6])));
-      else
-        throw std::runtime_error("completeFinalHarmonisation: could not find note (triads)");
     }
 
     finalHarmonisation.push_back(nextChord);
