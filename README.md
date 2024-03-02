@@ -30,5 +30,6 @@ A rough prototype of an application based on Mick Goodrick's Almanac. This is ju
 
 # To Do List
 
+- Pentatonic and hexatonal scales have not been implemented yet.
 - Fix the widgets alignment in Qt Designer (some labels are a bit misaligned).
 - If a functional note is selected in one of the "desired sequence" combo boxes, that note should be made unavailable in the other combo boxes. This requires a constant recreation / modification of the content of the "desired sequence" combo boxes every time the user selects an entry in a combo box.
