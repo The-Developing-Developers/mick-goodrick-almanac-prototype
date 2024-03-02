@@ -1,0 +1,36 @@
+{
+  "configurations":
+  [
+    {
+      "name": "GS Qt Current Version",
+      "includePath":
+      [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/src/",
+        "${workspaceFolder}/../build-mick-goodrick-almanac-prototype-Desktop_Qt_6_6_2_MinGW_64_bit-Debug/Almanac_autogen/include/", // So that Intellisense finds "ui_mainwindow.h"
+        "${env:Qt_2_VER_DIR}/mingw_64/include/**"
+      ],
+      "defines":
+      [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE"
+      ],
+      "compilerPath": "${env:Qt_1_INST_DIR}/Tools/mingw1120_64/bin/g++.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "windows-gcc-x64"
+    },
+
+    {
+      "name": "GS Qt 6.6.0 (Surface-Ubuntu)",
+      "includePath": [ ],
+      "defines": [ "_DEBUG", "UNICODE", "_UNICODE" ],
+      "compilerPath": "/usr/bin/g++",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "${default}"
+    }
+  ],
+  "version": 4
+}
