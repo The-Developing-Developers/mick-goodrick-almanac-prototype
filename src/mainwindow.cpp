@@ -176,7 +176,6 @@ void MainWindow::printHarmonisation(void)
   };
 
   constexpr size_t numOfQTextEdits = 7;
-
   const std::array<QComboBox*, numOfQTextEdits> comboBoxDesired_array // Helper container to manage all the `QComboBox`es of the desired sequences at once
   {
     ui->comboBoxDesired_1,
@@ -209,7 +208,8 @@ void MainWindow::printHarmonisation(void)
       throw std::runtime_error("completeFinalHarmonisation: could not find note (triads)");
   }
 
-  const NaturalNote              fundamental = ui->comboBox_fundamental->itemData(ui->comboBox_fundamental ->currentIndex()).value<NaturalNote::enum_t>(); // Conversione da `QVariant` al tipo sottostante (`NaturalNote::enum_t` in questo caso)
+  // Now the data required to build a `scale` and its `harmonisation` are ready
+  const NaturalNote              fundamental = ui->comboBox_fundamental->itemData(ui->comboBox_fundamental ->currentIndex()).value<NaturalNote::enum_t>(); // Conversion from `QVariant` to the underlying type (`NaturalNote::enum_t` in this case)
   const Alteration               alteration  = ui->comboBox_alteration ->itemData(ui->comboBox_alteration  ->currentIndex()).value<Alteration::enum_t>();
   const Scale::ScaleType         scaleType   = ui->comboBox_scaleType  ->itemData(ui->comboBox_scaleType   ->currentIndex()).value<Scale::ScaleType>();
   const ChordBuilder::Cycle_enum cycle       = ui->comboBox_cycle      ->itemData(ui->comboBox_cycle       ->currentIndex()).value<ChordBuilder::Cycle_enum>();
@@ -217,16 +217,21 @@ void MainWindow::printHarmonisation(void)
   Scale scale(Note(fundamental, alteration), scaleType);
   auto harmonisation = ChordBuilder::functionalHarmony(scale, m_numOfNotes, functionalSequence, cycle, m_interval);
 
-  QString result;
-
-  for (const auto & chord : harmonisation)
+  // Preparing to print the resulting chords in the dedicated `QTextEdit`s
+  const std::array<QTextEdit*, numOfQTextEdits> resultingChords_array // Helper container to manage all the `QTextEdit`s of the chords resulting from the harmonisation
   {
-    result += QString::fromStdString(chord.printChord());
-  }
+    ui->textEditChord_1,
+    ui->textEditChord_2,
+    ui->textEditChord_3,
+    ui->textEditChord_4,
+    ui->textEditChord_5,
+    ui->textEditChord_6,
+    ui->textEditChord_7
+  };
 
-  ui->textEdit->setText(result);
+  for (size_t i = 0; i != numOfQTextEdits; ++i)
+    resultingChords_array[i]->setText(QString::fromStdString(harmonisation[i].printChord()));
 }
-
 
 void MainWindow::onIntervalChanged(void)
 {
