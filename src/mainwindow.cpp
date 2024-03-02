@@ -10,7 +10,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-// Q_DECLARE_METATYPE(Alteration::enum_t); // TODO: in questo specifico esempio non serve, ma se `Alteration::enum_t` fosse usato in qualche segnale, sarebbe necessario riabilitare questa riga
+// Q_DECLARE_METATYPE(Alteration::enum_t); // in this specific example it is not needed, but if `Alteration::enum_t` were used in some signal, it would be necessary to re-enable this line
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
